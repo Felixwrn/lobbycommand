@@ -6,3 +6,6 @@ commands:
   lobby:
     description: Send to lobby
     aliases: [l]
+permissions:
+  lobby.use:
+    default: true
