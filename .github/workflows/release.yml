@@ -1,0 +1,32 @@
+name: Release Minecraft 26.3
+
+on:
+  push:
+    tags: ['mc26.3*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+      - name: Build plugin
+        run: mvn -B -ntp clean verify
+      - name: Create checksum
+        working-directory: target
+        run: sha256sum LobbyCommand-1.0.jar > SHA256SUMS
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: >-
+          gh release create "$RELEASE_TAG" --verify-tag --latest
+          --title 'LobbyCommand – Minecraft 26.3'
+          --notes-file .github/release-notes-mc26.3.md
+          target/LobbyCommand-1.0.jar target/SHA256SUMS
