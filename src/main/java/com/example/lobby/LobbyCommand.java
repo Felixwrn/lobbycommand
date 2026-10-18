@@ -15,6 +15,7 @@ public class LobbyCommand extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        saveDefaultConfig();
         getLogger().info("LobbyCommand enabled!");
         // Bungee Channel registrieren
         this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
